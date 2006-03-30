@@ -4,7 +4,7 @@ use base 'Date';
 use Carp;
 use vars '$VERSION';
 
-$VERSION  = 0.1;
+$VERSION  = 0.2;
 
 sub new {
   # shift self "object" reference to variable $class
@@ -498,17 +498,23 @@ Date::Step - A basic date iterator
 
 =head1 SYNOPSIS
 
-use Date::Step
+    use Date::Step
 
-my $step = Date::Step->new();  # new object
-$step->set_start('20051008');  # start date
-$step->set_end('20061008');    # end date
-$step->set_increment('1d12h'); # date increment length
-$step->set_format('%Y %B %e'); # format of returned date string
+    my $step = Date::Step->new();  # new object
+    $step->set_start('20051008');  # start date
+    $step->set_end('20061008');    # end date
+    $step->set_increment('1d12h'); # date increment length
+    $step->set_format('%Y %B %e'); # format of returned date string
+
+    my $date;
+    do {
+      $date = $step->get_current();
+      print "$date\n";
+    } while ($step->next());
 
 =head1 DESCRIPTION
 
-Date::Step is a basic date iterator class.
+C<Date::Step> is a basic date iterator class.
 
 Returned dates are done so using the convention set up by the Unix 'date' program:
 
@@ -523,6 +529,7 @@ Returned dates are done so using the convention set up by the Unix 'date' progra
     Y = four digit year
     y = two digit year; 00-99
 
+The default start date is Jan 1 1900, but there is no reason why the date can't be set earlier than that.  If there is a max date, it is probably after the year 9999. 
 =head1 AUTHOR
 
 Brett D. Estrade - <estrabd AT mailcan DOT com>
@@ -535,6 +542,10 @@ Write some tests and more useful documentation.
 
 This module handles hours as the smallest division of time.  If you wish to have a more fine grained capability, please let me know.
 
+I am not sure how robust this module is to doing things like changing the format or the increment amount arbitrarily through out the iterative generation of daytes, but I do not see why it would cause problems.  The only issue that might possibly come up would be losing some time during the transition phase.  Again, I don't know bc I have not tested it.
+
+There is no "previous" date, but it would probably be a neat features.
+
 =head1 BUGS
 
 Please send reports to me.
@@ -543,7 +554,7 @@ Please send reports to me.
 
 =head1 ACKNOWLEDGEMENTS
 
-Bug reports who supply patches get there name here :)
+Bug reports who supply patches for a cool new feature or a bug fix get there name here :)
 
 =head1 COPYRIGHT
 
